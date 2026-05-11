@@ -1,79 +1,94 @@
-# Winnipeg 311 Service Request Analysis: Operational Demand Dashboard
+# Winnipeg 311 Service Request Analysis - Operational Demand Dashboard
 
-## Project Overview
+## Project Overview  
+This project analyzes over **90,000 service requests** from the City of Winnipeg's 311 system to uncover patterns in public service demand across time and geography.
 
-This project analyzes over **90,000** records from the `City of Winnipeg's 311 Service Request` dataset to uncover patterns in public service demand. By transforming raw, messy data into two interactive dashboards, this study identifies operational hotspots, peak demand windows, and geographic trends to support effective city resource planning.
-
-## Project Assets
-* [**Temporal Demand Trends**](./reports/dashboard1.png) - Operational dashboard for time-series and peak-period analysis.
-* [**Geospatial Service Requests**](./reports/dashboard2.png) - Geographic dashboard featuring ward and neighborhood distribution.
-* [**Technical Workbook**](./311_Service_Request.xlsx) - Complete Excel workflow: cleaning, engineering, and pivot architecture.
-
-## Tools and Skills
-- Software: Microsoft Excel (Advanced)
-
-- Formulas: `XLOOKUP`, `IFS`, `INT`, `TEXT`, `LARGE`, Absolute Referencing (`$`)
-
-- Techniques: Data Cleaning, Feature Engineering, Time-Series Analysis, Dashboard Design
-
-- Visuals: Pivot Tables/Charts, Slicers, Camera Tool, Conditional Formatting (Heatmaps)
-
-
-## Dataset
-The City of Winnipeg 311 Service Request dataset contains over 90,000 records including:
-
-* Combined `Date/Time`
-* `Service Area`
-* `Service Request Type`
-* `Ward`
-* `Neighborhood`
-* `Location` (geographic coordinates)
-* `Point` (alternate coordinate format)
-
-
-## Part 1: Data Cleaning & Feature Engineering
-Before analysis, a dedicated **Working Sheet** was used to transform the raw dataset:
-
-1.  **Temporal Engineering:** Deconstructed combined timestamps into features:
-    * **Date & Year:** Extracted via `=INT([@Date/Time])`.
-    * **Month & Season:** Mapped using `TEXT()` and `IFS` statements (Winter, Spring, Summer, Fall).
-    * **Day & Category:** Grouped 24-hour time into operational blocks: *Morning, Afternoon, Evening, Night, and Overnight*.
-2.  **Data Normalization:**
-    * **Missing Values:** Replaced `Null` values in Ward and Neighborhood fields with `"Unknown"` to prevent data gaps.
-    * **Coordinate Parsing:** Split unstructured `Location` strings into distinct `Latitude` and `Longitude` columns for future mapping.
-
-## Part 2: Dashboard Architecture
-
-### Dashboard 1: Volume & Time Trends
-Focused on **when** demand occurs through high-level temporal analysis.
-* **Seasonal Trends:** Line charts showing monthly fluctuations.
-* **Hourly Distribution:** Histogram-style charts visualizing 24-hour activity.
-* **Operational Heatmap:** A "Time vs. Day" matrix highlighting peak periods using Excel's **Camera Tool**.
-
-### Dashboard 2: Geographic Demand Analysis
-Focused on **where** demand occurs, utilizing a custom-engineered data structure to ensure accuracy.
-* **Ward Rankings:** Horizontal bar chart of total requests by Ward.
-* **Top 15 Neighborhoods:** Clustered column chart identifying high-volume areas.
-* **Demand Treemap (Heatmap):** A hierarchical visualization of Top 10 Wards and their Top 5 Neighborhoods.
-    * **Technical Deep-Dive:** Standard Pivot Table filtering distorted Ward-level totals during hierarchical analysis. To preserve accurate parent-level aggregation, a Helper Table architecture was implemented using separate Pivot Tables, `XLOOKUP`, and Absolute References (`$`). 
-
+The goal is to transform raw municipal data into interactive dashboards that reveal operational hotspots, peak demand periods, and geographic distribution of citizen service requests.
 
 ## Key Insights
-- **Seasonal Demand:** Service requests were highest from January through May, with April recording the single highest monthly volume.
-- **Peak Service Hours:** Request activity peaked at 6 PM, while overnight activity (11 PM - 5 AM) remained consistently low.
-- **Weekday Demand Pattern:** Weekdays generated substantially more requests than weekends, with elevated activity persisting from 7 AM to 9 PM.
-- **Operational Hotspot:** The heatmap identified Monday-Thursday at 6 PM as the highest-demand operational window.
-- **Ward Concentration:** Mynarski recorded the highest request volume, exceeding 10,000 requests, while most other wards remained around 6,000.
-- **Neighborhood Clustering:** St. John's and William Whyte were the highest-volume neighborhoods and were both located within the Mynarski ward. Chalmers ranked third overall within the Elmwood - East Kildonan ward.
+
+- Weekdays consistently generated higher service demand than weekends, indicating work-week driven reporting behavior.  
+- Peak activity occurs around 6:00 PM, suggesting citizens submit requests after work hours.  
+- Tuesday at 6:00 PM recorded the highest single-hour demand across the dataset. 
+- Service requests are lowest between 11:00 PM and 5:00 AM, showing clear overnight inactivity.   
+- Late Winter to early spring months show slightly elevated demand compared to other seasons.
+- Certain wards (e.g., Mynarski, Elmwood, Point Douglas) consistently dominate request volume, indicating geographic concentration of issues. 
+- Mynarski recorded the highest overall request volume, exceeding 10,000 requests, while most other wards remained near 6,000.  
+- St. John's and William Whyte were the highest-volume neighborhoods and were both located within the Mynarski ward.
 
 
+## Tools & Skills
+
+- Microsoft Excel (Advanced)
+- Data Cleaning & Transformation
+- Feature Engineering (Time & Seasonal Categorization)
+- Time-Series Analysis
+- Pivot Tables & Pivot Charts
+- Interactive Dashboard Design
+- Heatmap Analysis (Conditional Formatting)
+- Slicers & Dynamic Filtering
+- Data Visualization & Storytelling
+
+## Dataset
+
+The City of Winnipeg 311 Service Request dataset contains over **90,000** records including:
+
+- Combined `Date/Time`
+- `Service Area`
+- `Service Request Type`
+- `Ward`
+- `Neighborhood`
+- `Location` (geographic coordinates)
+- `Point` (alternate coordinate format) 
 
 
-## Conclusion
+## Data Preparation & Feature Engineering
 
-The analysis reveals strong temporal and geographic demand patterns in Winnipeg's public service system. By transforming large-scale operational data into interactive dashboards, this project demonstrates the ability to clean, structure, and visualize complex datasets to support operational planning and resource allocation.
+### 1. Temporal Feature Engineering
+- Split combined Date/Time into separate components  
+- Extracted Year, Month, Day, and Hour  
+- Grouped months into Seasons (Winter, Spring, Summer, Fall)  
+- Categorized time into operational periods (Morning, Afternoon, Evening, Night, Overnight) 
 
 
----
+### 2. Data Cleaning
+- Replaced missing values in Ward and Neighborhood with "Unknown" 
+- Standardized inconsistent geographic fields  
+- Parsed coordinate strings into structured Latitude and Longitude fields  
+
+## Dashboard Structure
+
+### Dashboard 1: Time-Based Demand Analysis
+- Seasonal trend line chart (monthly volume patterns)  
+- Hourly distribution chart (simulated histogram)  
+- Heatmap (Time of Day vs Day of Week) using conditional formatting  
 
 
+### Dashboard 2: Geographic Demand Analysis
+- Ward-level ranking (horitzontal bar chart)  
+- Top 15 neighborhoods by request volume (column chart)
+- Heatmap-style treemap (Ward --> Neighborhood hierarchy)  
+
+
+## Technical Highlights
+
+- Built multi-layer pivot table architecture for time + geography analysis  
+- Used Excel Camera Tool for dynamic dashboard embedding  
+- Implemented slicers for Year and Service Area filtering  
+- Created helper tables to preserve hierarchical accuracy in aggregations  
+- Designed reusable feature engineering logic for time-based categorization  
+
+## Project Assets
+* [**Temporal Demand Trends**](./reports/dashboard1.png)
+* [**Geospatial Service Requests Trends**](./reports/dashboard2.png)
+* [**Technical Workbook**](./311_Service_Request.xlsx)
+
+## Outcome
+
+This project converts large-scale municipal service data into an interactive analytical dashboard that supports operational planning and resource allocation.
+
+It demonstrates the ability to:
+- Clean and structure large real-world datasets  
+- Engineer meaningful analytical features  
+- Build executive-level dashboards in Excel  
+- Extract actionable operational insights from public data  
